@@ -37,5 +37,8 @@ public class Aplicacao {
 
         System.out.println(conta.getSaldo());
         System.out.println(conta2.getSaldo());
+
+        System.out.println(conta.toString());
+        System.out.println(conta2.toString());
     }
 }
