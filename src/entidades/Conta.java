@@ -3,7 +3,7 @@ package entidades;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Conta {
+public abstract class Conta {
 
     private Integer numero;
     private String agencia;
@@ -35,7 +35,6 @@ public class Conta {
     public Date getAbertura() {
         return abertura;
     }
-
 
     public Pessoa getTitular() {
         return titular;
