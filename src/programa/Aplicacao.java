@@ -33,7 +33,7 @@ public class Aplicacao {
         System.out.println(conta.getSaldo());
 
         System.out.println(conta2.getSaldo());
-        conta.tranferirDinheiro(100.00, conta2);
+        conta.tranferirDinheiro(100.00, conta);
 
         System.out.println(conta.getSaldo());
         System.out.println(conta2.getSaldo());

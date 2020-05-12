@@ -62,7 +62,7 @@ public class Conta {
     }
 
     public boolean tranferirDinheiro(double valor, Conta destino) {
-        if (valor < 0 || valor > this.saldo) {
+        if (valor < 0 || valor > this.saldo || this == destino) {
             return false;
         }
 
