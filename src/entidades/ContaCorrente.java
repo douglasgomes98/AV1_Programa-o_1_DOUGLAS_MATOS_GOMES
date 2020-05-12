@@ -16,7 +16,7 @@ public class ContaCorrente extends Conta {
 
     @Override
     public String toString() {
-        return "Conta Poupança Nº " + getNumero() + "\n" +
+        return "Conta Corrente Nº " + getNumero() + "\n" +
                 "Agência " + getAgencia() + "\n" +
                 "Saldo R$ " + getSaldo() + "\n" +
                 "Abertura " + new SimpleDateFormat("dd/MM/yyyy").format(getAbertura()) + "\n" +
