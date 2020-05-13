@@ -30,7 +30,7 @@ public class ContaCorrente extends Conta implements Tributavel {
 
     @Override
     public boolean depositar(double valor) {
-        if (valor < 0) {
+        if (valor <= 0) {
             return false;
         }
 

@@ -10,7 +10,6 @@ public abstract class Conta {
     protected String agencia;
     protected Double saldo;
     protected Date abertura;
-
     protected Pessoa titular;
 
     public Conta(Integer numero, String agencia, Double saldo, Date abertura, Pessoa titular) {
