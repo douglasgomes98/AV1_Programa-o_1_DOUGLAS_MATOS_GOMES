@@ -1,10 +1,10 @@
 package programa;
 
 import entidades.Conta;
+import entidades.ContaCorrente;
 import entidades.Pessoa;
 
 import javax.swing.*;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,58 +18,42 @@ public class Aplicacao {
         List<Conta> contas = new ArrayList<>();
         boolean process = true;
 
-        String menuPrincipal = "1 - Adicionar uma conta corrente. \n" +
+        String menuPrincipal = "Escolha uma opção abaixo: \n" +
+                "1 - Adicionar uma conta corrente. \n" +
                 "2 - Adiconar uma conta poupanca \n" +
-                "3 - Depositar dinheiro \n" +
-                "4 - Sacar dinheiro \n" +
-                "5 - Transferência de dinheiro. \n" +
-                "6 - Encerrar o programa.";
-//        adicionarContaCorrente();
-//        Double numero = 0.0;
-//        System.out.println(inputValue(Double.class, "Número da Conta", "Cadastro de Conta Corrente").toString());
-        Double numero = inputValue(Double.class, "Número da Conta1", "Cadastro de Conta Corrente");
-        Integer numero2 = inputValue(Integer.class, "Número da Conta2", "Cadastro de Conta Corrente");
-        String numero3 = inputValue(String.class, "Número da Conta3", "Cadastro de Conta Corrente");
-        System.out.println(numero);
-        System.out.println(numero2);
-        System.out.println(numero3);
-//        do {
-//            try {
-//                int option = Integer.parseInt(JOptionPane.showInputDialog(null, menuPrincipal, "Menu de Opções", 3));
-//
-//                switch (option) {
-//                    case 1:
-//                        adicionarContaCorrente();
-//                    case 6:
-//                        process = false;
-//                }
-//            } catch (NumberFormatException e) {
-//                JOptionPane.showMessageDialog(null, "Entrada inválida.");
-//            }
-//
-//        } while (process);
-//        ContaCorrente conta = new ContaCorrente(1, "250", 100.00, new Date(), new Pessoa("Douglas"), 25.00, 15000.00);
-//        System.out.println(conta.getValorImposto());
-//
-//        System.out.println(JOptionPane.showInputDialog(null, "Némuro do Cadastro: ", "Cadastro", 3));
-//
-//        JOptionPane.showMessageDialog(null, "teste");
-//
-//
-//        JOptionPane.showMessageDialog(null, "Extrato"+"\n"+"1º Conta Corrente");
+                "3 - Listar contas cadastradas. \n" +
+                "4 - Depositar dinheiro \n" +
+                "5 - Sacar dinheiro \n" +
+                "6 - Transferência de dinheiro. \n" +
+                "7 - Encerrar o programa.";
+
+        do {
+            Integer option = inputValue(Integer.class, "Menu principal", menuPrincipal);
+
+            switch (option) {
+                case 1:
+                    contas.add(adicionarContaCorrente());
+                case 6:
+                    process = false;
+            }
+        } while (process);
     }
 
-    public static void adicionarContaCorrente() {
-        int numero = Integer.parseInt(JOptionPane.showInputDialog(null, "Cadastro de Conta Corrente: ", "Número da Conta", 3));
-        String agencia = JOptionPane.showInputDialog(null, "Cadastro de Conta Corrente: ", "Número da Agência", 3);
-        double saldo = Double.parseDouble(JOptionPane.showInputDialog(null, "Cadastro de Conta Corrente: ", "Saldo inicial", 3));
+    public static ContaCorrente adicionarContaCorrente() {
+        Integer numero = inputValue(Integer.class, "Cadastro de Conta Corrente: ", "Número da Conta");
+        String agencia = inputValue(String.class, "Cadastro de Conta Corrente: ", "Número da Agência");
+        Double saldo = inputValue(Double.class, "Cadastro de Conta Corrente: ", "Saldo inicial");
         Date abertura = new Date();
-        Pessoa titular = new Pessoa(JOptionPane.showInputDialog(null, "Cadastro de Conta Corrente: ", "Nome do Títular", 3));
-        double taxaAdministracao = Double.parseDouble(JOptionPane.showInputDialog(null, "Cadastro de Conta Corrente: ", "Taxa de Administração", 3));
-        double limite = Double.parseDouble(JOptionPane.showInputDialog(null, "Cadastro de Conta Corrente: ", "Limite", 3));
+        Pessoa titular = new Pessoa(inputValue(String.class, "Cadastro de Conta Corrente: ", "Nome do Títular"));
+        Double taxaAdministracao = inputValue(Double.class, "Cadastro de Conta Corrente: ", "Taxa de Administração");
+        Double limite = inputValue(Double.class, "Cadastro de Conta Corrente: ", "Limite");
+
+        ContaCorrente contaCorrente = new ContaCorrente(numero, agencia, saldo, abertura, titular, taxaAdministracao, limite);
+
+        return contaCorrente;
     }
 
-    public static <T> T inputValue(Class source, String message, String title) {
+    public static <T> T inputValue(Class source, String title, String message) {
         boolean error = false;
         Number valor = null;
 
@@ -91,13 +75,13 @@ public class Aplicacao {
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
-                    System.out.println(e);
+                    JOptionPane.showMessageDialog(null, "Entrada inválida.", "Alerta", 2);
                 }
 
                 error = false;
             } catch (NumberFormatException | ClassCastException | NullPointerException e) {
                 e.printStackTrace();
-                JOptionPane.showMessageDialog(null, "Entrada inválida.");
+                JOptionPane.showMessageDialog(null, "Entrada inválida.", "Alerta", 2);
                 error = true;
             }
 
