@@ -2,6 +2,7 @@ package programa;
 
 import entidades.Conta;
 import entidades.ContaCorrente;
+import entidades.ContaPoupanca;
 import entidades.Pessoa;
 
 import javax.swing.*;
@@ -15,7 +16,7 @@ public class Aplicacao {
     public static void main(String[] args) {
 
         Locale.setDefault(new Locale("en", "US"));
-        List<Conta> contas = new ArrayList<>();
+        List<? super Conta> contas = new ArrayList<>();
         boolean process = true;
 
         String menuPrincipal = "Escolha uma opção abaixo: \n" +
@@ -33,24 +34,17 @@ public class Aplicacao {
             switch (option) {
                 case 1:
                     contas.add(adicionarContaCorrente());
-                case 6:
+                    break;
+                case 2:
+                    contas.add(adicionarContaPoupanca());
+                    break;
+                case 3:
+                    listarContas(contas);
+                    break;
+                case 7:
                     process = false;
             }
         } while (process);
-    }
-
-    public static ContaCorrente adicionarContaCorrente() {
-        Integer numero = inputValue(Integer.class, "Cadastro de Conta Corrente: ", "Número da Conta");
-        String agencia = inputValue(String.class, "Cadastro de Conta Corrente: ", "Número da Agência");
-        Double saldo = inputValue(Double.class, "Cadastro de Conta Corrente: ", "Saldo inicial");
-        Date abertura = new Date();
-        Pessoa titular = new Pessoa(inputValue(String.class, "Cadastro de Conta Corrente: ", "Nome do Títular"));
-        Double taxaAdministracao = inputValue(Double.class, "Cadastro de Conta Corrente: ", "Taxa de Administração");
-        Double limite = inputValue(Double.class, "Cadastro de Conta Corrente: ", "Limite");
-
-        ContaCorrente contaCorrente = new ContaCorrente(numero, agencia, saldo, abertura, titular, taxaAdministracao, limite);
-
-        return contaCorrente;
     }
 
     public static <T> T inputValue(Class source, String title, String message) {
@@ -89,4 +83,38 @@ public class Aplicacao {
 
         return (T) valor;
     }
+
+    public static ContaCorrente adicionarContaCorrente() {
+        Integer numero = inputValue(Integer.class, "Cadastro de Conta Corrente: ", "Número da Conta");
+        String agencia = inputValue(String.class, "Cadastro de Conta Corrente: ", "Número da Agência");
+        Double saldo = inputValue(Double.class, "Cadastro de Conta Corrente: ", "Saldo inicial");
+        Date abertura = new Date();
+        Pessoa titular = new Pessoa(inputValue(String.class, "Cadastro de Conta Corrente: ", "Nome do Títular"));
+        Double taxaAdministracao = inputValue(Double.class, "Cadastro de Conta Corrente: ", "Taxa de Administração");
+        Double limite = inputValue(Double.class, "Cadastro de Conta Corrente: ", "Limite");
+
+        ContaCorrente contaCorrente = new ContaCorrente(numero, agencia, saldo, abertura, titular, taxaAdministracao, limite);
+
+        return contaCorrente;
+    }
+
+    public static ContaPoupanca adicionarContaPoupanca() {
+        Integer numero = inputValue(Integer.class, "Cadastro de Conta Poupança: ", "Número da Conta");
+        String agencia = inputValue(String.class, "Cadastro de Conta Poupança: ", "Número da Agência");
+        Double saldo = inputValue(Double.class, "Cadastro de Conta Poupança: ", "Saldo inicial");
+        Date abertura = new Date();
+        Pessoa titular = new Pessoa(inputValue(String.class, "Cadastro de Conta Poupança: ", "Nome do Títular"));
+        Double porcentagemRedimento = inputValue(Double.class, "Cadastro de Conta Poupança: ", "Porcentagem de Rendimento");
+        Integer diaRedimento = inputValue(Integer.class, "Cadastro de Conta Poupança: ", "Dia de Rendimento");
+
+        ContaPoupanca contaPoupanca = new ContaPoupanca(numero, agencia, saldo, abertura, titular, porcentagemRedimento, diaRedimento);
+
+        return contaPoupanca;
+    }
+
+    public static void listarContas(List<? super Conta> lista) {
+        String str = lista.toString().replace("[", "").replace("]", "").replace(", ", "");
+        JOptionPane.showMessageDialog(null, str, "Contas Cadastradas", 3);
+    }
+
 }

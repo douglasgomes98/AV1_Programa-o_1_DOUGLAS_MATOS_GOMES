@@ -1,5 +1,6 @@
 package entidades;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -30,8 +31,8 @@ public abstract class Conta {
     public String toString() {
         return "Conta Nº " + numero + "\n" +
                 "Agência " + agencia + "\n" +
-                "Saldo R$ " + saldo + "\n" +
-                "Abertura " + new SimpleDateFormat("dd/MM/yyyy").format(abertura) + "\n" +
+                "Saldo R$ " + new DecimalFormat("#.00").format(saldo) + "\n" +
+                "Abertura " + new SimpleDateFormat("dd/MM/yyyy 'às' HH:mm").format(abertura) + "\n" +
                 "Titular " + titular.getNome() + "\n";
     }
 }
