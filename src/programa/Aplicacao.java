@@ -4,13 +4,17 @@ import entidades.Conta;
 import entidades.Pessoa;
 
 import javax.swing.*;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class Aplicacao {
 
     public static void main(String[] args) {
+
+        Locale.setDefault(new Locale("en", "US"));
         List<Conta> contas = new ArrayList<>();
         boolean process = true;
 
@@ -21,9 +25,14 @@ public class Aplicacao {
                 "5 - Transferência de dinheiro. \n" +
                 "6 - Encerrar o programa.";
 //        adicionarContaCorrente();
-        Double numero = 0.0;
-        numero = inputValue(numero, "Número da Conta", "Cadastro de Conta Corrente");
+//        Double numero = 0.0;
+//        System.out.println(inputValue(Double.class, "Número da Conta", "Cadastro de Conta Corrente").toString());
+        Double numero = inputValue(Double.class, "Número da Conta1", "Cadastro de Conta Corrente");
+        Integer numero2 = inputValue(Integer.class, "Número da Conta2", "Cadastro de Conta Corrente");
+        String numero3 = inputValue(String.class, "Número da Conta3", "Cadastro de Conta Corrente");
         System.out.println(numero);
+        System.out.println(numero2);
+        System.out.println(numero3);
 //        do {
 //            try {
 //                int option = Integer.parseInt(JOptionPane.showInputDialog(null, menuPrincipal, "Menu de Opções", 3));
@@ -60,38 +69,29 @@ public class Aplicacao {
         double limite = Double.parseDouble(JOptionPane.showInputDialog(null, "Cadastro de Conta Corrente: ", "Limite", 3));
     }
 
-    public static <T> T inputValue(T source, String message, String title) {
+    public static <T> T inputValue(Class source, String message, String title) {
         boolean error = false;
+        Number valor = null;
+
         do {
             try {
                 String value = JOptionPane.showInputDialog(null, message, title, 3);
-                System.out.println(source.getClass());
-                System.out.println(value);
 
-                if (source == null || value == "" || value.isEmpty()) {
+                if (value == null || value.isEmpty()) {
                     throw new NullPointerException();
                 }
 
-                if (source.getClass().equals(String.class)) {
-                    System.out.println("String");
-
-                    return (T) value;
-                }
-
-                if (source.getClass().equals(Double.class)) {
-                    System.out.println("Double");
-                    Double number = 0.0;
-                    number = Double.parseDouble(value);
-
-                    return (T) number;
-                }
-
-                if (source.getClass().equals(Integer.class)) {
-                    System.out.println("Integer");
-                    Integer number = 0;
-                    number = Integer.parseInt(value);
-
-                    return (T) number;
+                try {
+                    if (source.equals(Double.class)) {
+                        valor = Double.parseDouble(value);
+                    } else if (source.equals(Integer.class)) {
+                        valor = (int) Double.parseDouble(value);
+                    } else {
+                        return (T) value;
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.out.println(e);
                 }
 
                 error = false;
@@ -101,8 +101,8 @@ public class Aplicacao {
                 error = true;
             }
 
-        } while (error != false);
+        } while (valor == null);
 
-        return source;
+        return (T) valor;
     }
 }
