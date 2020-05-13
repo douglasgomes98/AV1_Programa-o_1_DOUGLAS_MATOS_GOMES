@@ -5,12 +5,12 @@ import java.util.Date;
 
 public abstract class Conta {
 
-    private Integer numero;
-    private String agencia;
-    private Double saldo;
-    private Date abertura;
+    protected Integer numero;
+    protected String agencia;
+    protected Double saldo;
+    protected Date abertura;
 
-    private Pessoa titular;
+    protected Pessoa titular;
 
     public Conta(Integer numero, String agencia, Double saldo, Date abertura, Pessoa titular) {
         this.numero = numero;
@@ -20,57 +20,11 @@ public abstract class Conta {
         this.titular = titular;
     }
 
-    public Integer getNumero() {
-        return numero;
-    }
+    public abstract boolean sacar(double valor);
 
-    public String getAgencia() {
-        return agencia;
-    }
+    public abstract boolean depositar(double valor);
 
-    public Double getSaldo() {
-        return saldo;
-    }
-
-    public Date getAbertura() {
-        return abertura;
-    }
-
-    public Pessoa getTitular() {
-        return titular;
-    }
-
-    public boolean saca(double valor) {
-        if (valor < 0 || valor > this.saldo) {
-            return false;
-        }
-
-        this.saldo -= valor;
-
-        return true;
-    }
-
-    public boolean deposita(double valor) {
-        if (valor < 0) {
-            return false;
-        }
-
-        this.saldo += valor;
-
-        return true;
-    }
-
-    public boolean tranferirDinheiro(double valor, Conta destino) {
-        if (valor < 0 || valor > this.saldo || this == destino) {
-            return false;
-        }
-
-        this.saldo -= valor;
-
-        destino.deposita(valor);
-
-        return true;
-    }
+    public abstract boolean tranferirDinheiro(double valor, Conta destino);
 
     @Override
     public String toString() {
