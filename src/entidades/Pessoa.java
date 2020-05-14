@@ -2,7 +2,7 @@ package entidades;
 
 public class Pessoa {
 
-    private String nome;
+    private final String nome;
 
     public Pessoa(String nome) {
         this.nome = nome;

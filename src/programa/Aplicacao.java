@@ -16,11 +16,13 @@ public class Aplicacao {
     public static void main(String[] args) {
 
         Locale.setDefault(new Locale("en", "US"));
+        // Lista de contas genericas onde eh possivel adicionar qualquer classe que eh um super tipo de conta
         List<? super Conta> contas = new ArrayList<>();
         boolean process = true;
-        contas.add(new ContaCorrente(1, "1", 1.0, new Date(), new Pessoa("1"), 0.01, 1.0));
-        contas.add(new ContaPoupanca(2, "2", 2.0, new Date(), new Pessoa("2"), 2.0, 2));
-        contas.add(new ContaCorrente(3, "1", 1.0, new Date(), new Pessoa("1"), 0.01, 1.0));
+
+//        contas.add(new ContaCorrente(1, "1", 1.0, new Date(), new Pessoa("Douglas Matos Gomes"), 0.01, 1.0));
+//        contas.add(new ContaPoupanca(2, "2", 22.0, new Date(), new Pessoa("Matheus Carvalho de Almeida"), 2.0, 2));
+//        contas.add(new ContaCorrente(3, "1", 1.0, new Date(), new Pessoa("Samuel Araujo Delgado"), 0.01, 1.0));
 
         String menuPrincipal = "Escolha uma opção abaixo: \n" +
                 "1 - Adicionar uma conta corrente. \n" +
@@ -30,7 +32,7 @@ public class Aplicacao {
                 "5 - Sacar dinheiro \n" +
                 "6 - Transferência de dinheiro. \n" +
                 "7 - Encerrar o programa.";
-
+        // do-While para verificar a opcao de escolha do menu
         do {
             Integer option = inputValue(Integer.class, "Menu principal", menuPrincipal);
 
@@ -45,8 +47,16 @@ public class Aplicacao {
                     listarContas(contas);
                     break;
                 case 4:
-                    Conta contaSelecionada = selecionarConta(contas);
+                    Conta contaSelecionada = selecionarConta(contas, false);
                     depositarDinheiro(contaSelecionada);
+                    break;
+                case 5:
+                    Conta contaSelect = selecionarConta(contas, false);
+                    sacarDinheiro(contaSelect);
+                    break;
+                case 6:
+                    Conta contaSelec = selecionarConta(contas, false);
+                    transferirDinheiro(contaSelec, contas);
                     break;
                 case 7:
                     process = false;
@@ -55,6 +65,7 @@ public class Aplicacao {
         } while (process);
     }
 
+    // Funcao generica que faz a leitura do teclado e converte o valor recebido para um tipo desejado
     public static <T> T inputValue(Class source, String title, String message) {
         Number valor = null;
 
@@ -89,6 +100,7 @@ public class Aplicacao {
         return (T) valor;
     }
 
+    // Funcao para adicionar conta corrente
     public static ContaCorrente adicionarContaCorrente(Integer quantidadeContas) {
         Integer numero = ++quantidadeContas;
         String agencia = inputValue(String.class, "Cadastro de Conta Corrente: ", "Número da Agência");
@@ -103,6 +115,7 @@ public class Aplicacao {
         return contaCorrente;
     }
 
+    // Funcao para adicionar conta poupanca
     public static ContaPoupanca adicionarContaPoupanca(Integer quantidadeContas) {
         Integer numero = ++quantidadeContas;
         String agencia = inputValue(String.class, "Cadastro de Conta Poupança: ", "Número da Agência");
@@ -117,33 +130,50 @@ public class Aplicacao {
         return contaPoupanca;
     }
 
+    // Funcao para listar as contas adicionadas
     public static void listarContas(List<? super Conta> lista) {
         String str = lista.toString().replace("[", "").replace("]", "").replace(", ", "");
         JOptionPane.showMessageDialog(null, str.isEmpty() ? "Nenhuma conta cadastrada!" : str, "Contas Cadastradas", 3);
     }
 
-    public static Conta selecionarConta(List<? super Conta> contas) {
+    // Funcao para selecionar a conta desejada e tambem faz a verificacao de operacao de trasnferencia
+    public static Conta selecionarConta(List<? super Conta> contas, boolean transf) {
         boolean error = false;
         Integer idConta = null;
 
-        do {
-            idConta = inputValue(Integer.class, "Selecione uma conta", "Digite o número de uma conta");
-            System.out.println(idConta);
-            if (idConta > 0 && idConta <= contas.size()) {
-                error = false;
-            } else {
-                JOptionPane.showMessageDialog(null, "Entrada inválida.", "Alerta", 2);
-                error = true;
-            }
+        if (!transf) {
+            do {
+                idConta = inputValue(Integer.class, "Selecione uma conta", "Digite o número de uma conta");
+                System.out.println(idConta);
+                if (idConta > 0 && idConta <= contas.size()) {
+                    error = false;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Entrada inválida.", "Alerta", 2);
+                    error = true;
+                }
 
-        } while (error != false);
+            } while (error != false);
+        } else {
+            do {
+                idConta = inputValue(Integer.class, "Selecione uma conta Destino", "Digite o número de uma conta de destino");
+                System.out.println(idConta);
+                if (idConta > 0 && idConta <= contas.size()) {
+                    error = false;
+                } else {
+                    JOptionPane.showMessageDialog(null, "Entrada inválida.", "Alerta", 2);
+                    error = true;
+                }
+
+            } while (error != false);
+        }
 
         Conta contaSelecionada = (Conta) contas.get(--idConta);
         return contaSelecionada;
     }
 
+    // Funcao para depositar dinheiro na conta desejada
     public static void depositarDinheiro(Conta conta) {
-        boolean error = false;
+        boolean error;
         do {
             Double valor = inputValue(Double.class, "Depositar Dinheiro", "Digite o valor do deposito.");
             boolean sucesso = conta.depositar(valor);
@@ -155,6 +185,43 @@ public class Aplicacao {
                 JOptionPane.showMessageDialog(null, "Quantidade inválida.", "Alerta", 2);
                 error = true;
             }
+        } while (error);
+    }
+
+    // Funcao para sacar dinheiro na conta desejada
+    public static void sacarDinheiro(Conta conta) {
+        boolean error = false;
+        do {
+            Double valor = inputValue(Double.class, "Sacar Dinheiro", "Digite o valor de saque.");
+            boolean sucesso = conta.sacar(valor);
+
+            if (sucesso) {
+                JOptionPane.showMessageDialog(null, "Operação realizada com sucesso!", "Sacar Dinheiro.", 3);
+                error = false;
+            } else {
+                JOptionPane.showMessageDialog(null, "Quantidade inválida.", "Alerta", 2);
+                error = true;
+            }
+
         } while (error != false);
+    }
+
+    // Funcao para transferir dinheiro na conta desejada para uma conta destino
+    public static void transferirDinheiro(Conta conta, List<? super Conta> contas) {
+        boolean error = false;
+        do {
+            Double valor = inputValue(Double.class, "Transferir Dinheiro", "Digite o valor de transferencia.");
+            boolean sucesso = conta.tranferirDinheiro(valor, selecionarConta(contas, true));
+
+            if (sucesso) {
+                JOptionPane.showMessageDialog(null, "Operação realizada com sucesso!", "Transferir Dinheiro.", 3);
+                error = false;
+            } else {
+                JOptionPane.showMessageDialog(null, "Quantidade inválida.", "Alerta", 2);
+                error = true;
+            }
+
+        } while (error != false);
+
     }
 }
