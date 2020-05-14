@@ -4,6 +4,7 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+// classe abstrata de conta
 public abstract class Conta {
 
     protected Integer numero;
@@ -20,6 +21,7 @@ public abstract class Conta {
         this.titular = titular;
     }
 
+    // metodos abstratos
     public abstract boolean sacar(double valor);
 
     public abstract boolean depositar(double valor);
@@ -28,9 +30,10 @@ public abstract class Conta {
 
     @Override
     public String toString() {
+        String str = saldo > 0 ? new DecimalFormat("#.00").format(saldo) : "0.00";
         return "Conta Nº " + numero + "\n" +
                 "Agência " + agencia + "\n" +
-                "Saldo R$ " + new DecimalFormat("#.00").format(saldo) + "\n" +
+                "Saldo R$ " + str + "\n" +
                 "Abertura " + new SimpleDateFormat("dd/MM/yyyy 'às' HH:mm").format(abertura) + "\n" +
                 "Titular " + titular.getNome() + "\n";
     }
