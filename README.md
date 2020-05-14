@@ -29,6 +29,12 @@ são obrigadas a implementar as funcionares de sacar, despositar e tranferir din
 7- Transforme os métodos da Classe Conta em métodos abstratos, e faça a
 implementação correta nas Classes ContaCorrente e ContaPoupanca. Comente
 justificando a lógica utilizada.\
+R= No caso do saque, o valor solicitado não pode ser negativo ou igual a zero, 
+além de não ser maior que o saldo da conta.\
+No caso do deposito, o valor solicitado não pode ser negavito ou igual a zero.\
+No caso da transferencia, o valor solicitado não pode ser negativo ou igual a zero,
+alem de não ser maior que o saldo da conta que irá fazer a transferência, além que uma conta
+não pode transferir para a conta de origem.\
 8- Crie uma interface Tributavel e adicione o método getValorImposto() a essa
 interface. Após isso, faça a Classe ContaCorrente implementar essa nova
 interface. Implemente o método getValorImposto() na classe ContaCorrente,

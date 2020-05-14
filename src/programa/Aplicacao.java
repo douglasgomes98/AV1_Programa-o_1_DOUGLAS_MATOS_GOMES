@@ -144,7 +144,6 @@ public class Aplicacao {
         if (!transf) {
             do {
                 idConta = inputValue(Integer.class, "Selecione uma conta", "Digite o número de uma conta");
-                System.out.println(idConta);
                 if (idConta > 0 && idConta <= contas.size()) {
                     error = false;
                 } else {
@@ -156,7 +155,6 @@ public class Aplicacao {
         } else {
             do {
                 idConta = inputValue(Integer.class, "Selecione uma conta Destino", "Digite o número de uma conta de destino");
-                System.out.println(idConta);
                 if (idConta > 0 && idConta <= contas.size()) {
                     error = false;
                 } else {
